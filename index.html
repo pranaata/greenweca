@@ -3,218 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Bli Made Properties | Made Arya</title>
-    
-    <!-- Tailwind CSS -->
+    <title>My Property Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
-        /* Custom styles for an elegant touch */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa; /* A very light grey for a soft background */
-        }
-        .hero-bg {
-            background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-        }
-        .card-hover-effect {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-        .card-hover-effect:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+        [contenteditable]:focus { outline: 2px solid #3b82f6; background-color: #eff6ff; border-radius: 4px; }
+        [contenteditable][data-admin-enabled="true"]:hover { background-color: #f3f4f6; cursor: text; }
+        .property-card-overlay { opacity: 0; transition: opacity 0.3s ease; }
+        .group:hover .property-card-overlay { opacity: 1; }
+        .hero-bg { background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; }
+        .custom-select { -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1em; padding-right: 2.5rem; }
+        /* Hide admin controls by default */
+        .admin-controls { display: none; }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <!-- Header & Navigation -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <!-- Header Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-gray-900">Bli Made<span class="text-blue-600">.</span></a>
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#about" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a>
-                <a href="#properties" class="text-gray-600 hover:text-blue-600 transition duration-300">Properties</a>
-                <a href="#agent" class="text-gray-600 hover:text-blue-600 transition duration-300">Our Agent</a>
-                <a href="#contact" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Contact Us</a>
+                <a href="#" class="nav-link">Home</a>
+                <a href="#properties" class="nav-link">Properties</a>
+                <a href="#about" class="nav-link">About</a>
+                <button id="login-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Admin Login</button>
+                <button id="logout-btn" class="hidden bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Logout</button>
             </div>
             <button class="md:hidden focus:outline-none" id="mobile-menu-button">
                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </nav>
-        <!-- Mobile Menu -->
         <div class="hidden md:hidden" id="mobile-menu">
-            <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-100">About</a>
+            <a href="#" class="block py-2 px-6 text-sm hover:bg-gray-100">Home</a>
             <a href="#properties" class="block py-2 px-6 text-sm hover:bg-gray-100">Properties</a>
-            <a href="#agent" class="block py-2 px-6 text-sm hover:bg-gray-100">Our Agent</a>
-            <a href="#contact" class="block py-2 px-6 text-sm hover:bg-gray-100">Contact Us</a>
+            <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-100">About</a>
+            <a href="#" id="mobile-login-btn" class="block py-2 px-6 text-sm hover:bg-gray-100">Admin Login</a>
+            <a href="#" id="mobile-logout-btn" class="hidden py-2 px-6 text-sm hover:bg-gray-100 text-red-600">Logout</a>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-bg text-white">
-        <div class="bg-black/50 min-h-[60vh] flex items-center">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Find Your Next Chapter</h1>
-                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">We specialize in connecting discerning buyers with exceptional properties. Your dream home is waiting.</p>
+    <section class="hero-bg text-white w-full">
+        <div class="bg-black/50 min-h-[50vh] flex items-center justify-center">
+            <div class="text-center px-6">
+                <h1 id="hero-title" class="editable text-4xl md:text-6xl font-bold leading-tight mb-4 p-2 rounded"></h1>
+                <p id="hero-subtitle" class="editable text-lg md:text-xl text-gray-200 max-w-3xl mx-auto p-2 rounded"></p>
             </div>
         </div>
     </section>
 
+    <!-- Main Content Area -->
     <main class="container mx-auto px-6 py-12 md:py-20">
-        <!-- About Us Section -->
-        <section id="about" class="mb-16 md:mb-24 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose Bli Made?</h2>
-            <p class="max-w-3xl mx-auto text-gray-600">
-                At Bli Made Properties, we're not just selling homes; we're curating lifestyles. With over a decade of experience in the luxury market, we bring a sophisticated, data-driven, and deeply personal approach to real estate. Our commitment to integrity and excellence is unwavering.
-            </p>
-        </section>
-
-        <!-- Featured Properties Section -->
-        <section id="properties" class="mb-16 md:mb-24">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Featured Properties</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Property Card 1 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg card-hover-effect">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop" alt="Modern Villa" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/4a5568?text=Image+Not+Found';">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">The Glass House</h3>
-                        <p class="text-gray-600 mb-4">Gatsu, Denpasar</p>
-                        <p class="text-2xl font-semibold text-blue-600 mb-4">IDR 3,500,000,000</p>
-                        <div class="flex justify-between text-sm text-gray-600 border-t pt-4">
-                            <span class="flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg> 4 Beds
-                            </span>
-                            <span class="flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 5 Baths
-                            </span>
-                             <span class="flex items-center">
-                               <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V4h4M4 4l5 5m11-1v4h-4m4-4l-5 5M4 16v4h4m-4-4l5-5m11 5v-4h-4m4 4l-5-5"></path></svg> 3,900 m²
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Property Card 2 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg card-hover-effect">
-                    <img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?q=80&w=1974&auto=format&fit=crop" alt="Seaside Retreat" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/4a5568?text=Image+Not+Found';">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Oceanview Sanctuary</h3>
-                        <p class="text-gray-600 mb-4">Saba, Gianyar</p>
-                        <p class="text-2xl font-semibold text-blue-600 mb-4">IDR 5,250,000,000</p>
-                        <div class="flex justify-between text-sm text-gray-600 border-t pt-4">
-                           <span class="flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg> 5 Beds
-                            </span>
-                            <span class="flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 6 Baths
-                            </span>
-                             <span class="flex items-center">
-                               <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V4h4M4 4l5 5m11-1v4h-4m4-4l-5 5M4 16v4h4m-4-4l5-5m11 5v-4h-4m4 4l-5-5"></path></svg> 5,100 m²
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Property Card 3 -->
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg card-hover-effect">
-                    <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=2070&auto=format&fit=crop" alt="Urban Loft" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/4a5568?text=Image+Not+Found';">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Downtown Penthouse</h3>
-                        <p class="text-gray-600 mb-4">Keliki, Tegallalang</p>
-                        <p class="text-2xl font-semibold text-blue-600 mb-4">IDR 2,100,000,000</p>
-                        <div class="flex justify-between text-sm text-gray-600 border-t pt-4">
-                            <span class="flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg> 2 Beds
-                            </span>
-                            <span class="flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 2 Baths
-                            </span>
-                             <span class="flex items-center">
-                               <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V4h4M4 4l5 5m11-1v4h-4m4-4l-5 5M4 16v4h4m-4-4l5-5m11 5v-4h-4m4 4l-5-5"></path></svg> 2,600 m²
-                            </span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Properties Section -->
+        <section id="properties">
+            <h2 class="text-3xl font-bold mb-4 text-center">Properties</h2>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <div class="relative"><select id="location-filter" class="custom-select w-full sm:w-48 border border-gray-300 rounded-lg p-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All Locations</option></select></div>
+                <div class="relative"><select id="type-filter" class="custom-select w-full sm:w-48 border border-gray-300 rounded-lg p-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All Types</option></select></div>
+            </div>
+            <div id="property-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+            <div id="add-property-container" class="admin-controls text-center mt-8">
+                 <button id="add-property-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">Add New Property</button>
             </div>
         </section>
-
-        <!-- Our Agent Section -->
-        <section id="agent" class="bg-white p-8 md:p-12 rounded-lg shadow-md flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop" 
-                 alt="Real Estate Agent Jane Doe" 
-                 class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 border-blue-200"
-                 onerror="this.onerror=null;this.src='https://placehold.co/200x200/e2e8f0/4a5568?text=Agent';">
-            <div class="text-center md:text-left">
-                <h2 class="text-2xl md:text-3xl font-bold mb-2">Meet Your Agent</h2>
-                <h3 class="text-xl font-semibold text-blue-600 mb-3">Bli Made</h3>
-                <p class="text-gray-600 max-w-lg">
-                    With a passion for architecture and a deep understanding of the market, Bli Made has successfully guided hundreds of clients to their perfect homes. Her meticulous attention to detail and dedication to client satisfaction make her a trusted advisor in your property journey.
-                </p>
-                <a href="#contact" class="mt-4 inline-block text-blue-600 font-semibold hover:underline">Connect with Bli Made →</a>
+        
+        <!-- Profile Section -->
+        <section id="about" class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mt-20 bg-white p-10 rounded-lg shadow-sm">
+            <div class="relative group">
+                <img id="profile-picture" alt="Profile Picture" class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md">
+                <div class="admin-controls absolute inset-0 rounded-full bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
+                    <button onclick="window.openImageModal(null, 'profile-picture')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change</button>
+                </div>
+            </div>
+            <div class="text-center md:text-left flex-1">
+                <h1 id="profile-title" class="editable text-3xl md:text-4xl font-bold mb-2 p-2 rounded"></h1>
+                <p id="profile-description" class="editable text-gray-600 p-2 rounded"></p>
             </div>
         </section>
     </main>
 
-    <!-- Footer / Contact Section -->
-    <footer id="contact" class="bg-gray-900 text-white">
-        <div class="container mx-auto px-6 py-12">
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-800 text-gray-300 w-full mt-20">
+         <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Bli Made<span class="text-blue-500">.</span></h3>
-                    <p class="text-gray-400">Your key to exceptional living.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="mailto:aryagnwn@gmail.com" class="hover:text-white">aryagnwn@gmail.com</a></li>
-                        <li><a href="tel:+62 857-3722-2705" class="hover:text-white">+62 857-3722-2705</a></li>
-                        <li>Br. Pejeng aji, Tegallalang, Gianyar, Bali 80561</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
-                    <div class="flex justify-center md:justify-start space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.792 2.792c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.792 2.792c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.792-2.792c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 012.792-2.792c.636-.247 1.363.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 8.118c-2.146 0-3.882 1.736-3.882 3.882s1.736 3.882 3.882 3.882 3.882-1.736 3.882-3.882-1.736-3.882-3.882-3.882zM12 14.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM16.882 8.292a1.156 1.156 0 100-2.312 1.156 1.156 0 000 2.312z" clip-rule="evenodd" /></svg>
-                        </a>
-                    </div>
-                </div>
+                <div><h3 class="text-xl font-bold mb-4 text-white">Bli Made<span class="text-blue-500">.</span></h3><p class="text-gray-400">Your key to exceptional living.</p></div>
+                <div><h3 class="text-lg font-semibold mb-4 text-white">Contact Us</h3><ul class="space-y-2 text-gray-400"><li><a href="mailto:aryagnwn@gmail.com" class="hover:text-white transition">aryagnwn@gmail.com</a></li><li><a href="tel:+6285737222705" class="hover:text-white transition">+62 857-3722-2705</a></li><li>Br. Pejeng aji, Tegallalang, Gianyar, Bali 80561</li></ul></div>
+                <div><h3 class="text-lg font-semibold mb-4 text-white">Follow Us</h3><div class="flex justify-center md:justify-start space-x-4"><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path></svg></a><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg></a><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.792 2.792c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.792 2.792c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.792-2.792c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 012.792-2.792c.636-.247 1.363.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 8.118c-2.146 0-3.882 1.736-3.882 3.882s1.736 3.882 3.882 3.882 3.882-1.736 3.882-3.882-1.736-3.882-3.882-3.882zM12 14.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM16.882 8.292a1.156 1.156 0 100-2.312 1.156 1.156 0 000 2.312z" clip-rule="evenodd"></path></svg></a></div></div>
             </div>
-            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
-                <p>&copy; 2025 Bli Made. All Rights Reserved.</p>
-            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm"><p>&copy; 2025 Bli Made. All Rights Reserved.</p></div>
         </div>
     </footer>
 
-    <script>
-        // JavaScript for mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+    <!-- Modals -->
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-sm">
+            <h3 class="text-xl font-bold mb-4">Admin Login</h3>
+            <div class="space-y-4">
+                <input type="email" id="email-input" placeholder="Email" class="w-full border p-2 rounded">
+                <input type="password" id="password-input" placeholder="Password" class="w-full border p-2 rounded">
+            </div>
+            <p id="login-error" class="text-red-500 text-sm mt-2 hidden"></p>
+            <div class="flex justify-end space-x-4 mt-6">
+                <button onclick="closeModal('login-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
+                <button onclick="login()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</button>
+            </div>
+        </div>
+    </div>
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"><div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-md"><h3 class="text-xl font-bold mb-4">Change Image</h3><p class="text-sm text-gray-600 mb-4">Paste the new image URL below:</p><input type="text" id="image-url-input" class="w-full border p-2 rounded mb-4" placeholder="https://example.com/image.jpg"><div class="flex justify-end space-x-4"><button onclick="closeModal('image-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button><button onclick="saveImage()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button></div></div></div>
+    <div id="property-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"><div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-md"><h3 class="text-xl font-bold mb-4">Add New Property</h3><div class="space-y-4"><input type="text" id="new-property-title" placeholder="Property Title" class="w-full border p-2 rounded"><input type="text" id="new-property-location" placeholder="Location (e.g., Denpasar)" class="w-full border p-2 rounded"><input type="text" id="new-property-type" placeholder="Type (e.g., Villa)" class="w-full border p-2 rounded"><input type="text" id="new-property-image" placeholder="Image URL" class="w-full border p-2 rounded"></div><div class="flex justify-end space-x-4 mt-6"><button onclick="closeModal('property-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button><button onclick="addProperty()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Property</button></div></div></div>
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+    <!-- Firebase and App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Close mobile menu when a link is clicked
-        const menuLinks = document.querySelectorAll('#mobile-menu a');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-editable-website';
+
+        let auth, db;
+        let localProperties = [];
+        let currentImageElementId = null;
+        let currentPropertyId = null;
+
+        async function initializeFirebase() {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            onAuthStateChanged(auth, user => {
+                if (user) {
+                    console.log("Admin logged in:", user.email);
+                    toggleAdminMode(true);
+                } else {
+                    console.log("User logged out.");
+                    toggleAdminMode(false);
+                }
             });
-        });
+            listenForContentChanges();
+        }
+        
+        function getDocRef() {
+            return doc(db, "artifacts", appId, "public/data/pageContent", "main");
+        }
+
+        function listenForContentChanges() {
+            onSnapshot(getDocRef(), (docSnap) => {
+                // FIX: If doc exists, use its data. Otherwise, use an empty object.
+                // This ensures updatePageContent is always called and can apply defaults.
+                const data = docSnap.exists() ? docSnap.data() : {};
+                updatePageContent(data);
+            }, console.error);
+        }
+
+        function toggleAdminMode(isAdmin) {
+            document.querySelectorAll('.admin-controls').forEach(el => {
+                el.style.display = isAdmin ? 'block' : 'none';
+            });
+            document.querySelectorAll('.editable').forEach(el => {
+                el.setAttribute('contenteditable', isAdmin);
+                el.setAttribute('data-admin-enabled', isAdmin);
+            });
+            document.getElementById('login-btn').style.display = isAdmin ? 'none' : 'block';
+            document.getElementById('logout-btn').style.display = isAdmin ? 'block' : 'none';
+            document.getElementById('mobile-login-btn').style.display = isAdmin ? 'none' : 'block';
+            document.getElementById('mobile-logout-btn').style.display = isAdmin ? 'block' : 'none';
+            document.querySelectorAll('.group .property-card-overlay').forEach(el => {
+                el.style.display = isAdmin ? '' : 'none';
+            });
+        }
+        
+        function updatePageContent(data) {
+            // Default content is now used if the database field is missing.
+            document.getElementById('hero-title').textContent = data.heroTitle || 'Find Your Next Chapter';
+            document.getElementById('hero-subtitle').textContent = data.heroSubtitle || 'Your dream home is waiting.';
+            document.getElementById('profile-title').textContent = data.profileTitle || 'About Bli Made';
+            document.getElementById('profile-description').textContent = data.profileDescription || 'Edit this description.';
+            document.getElementById('profile-picture').src = data.profilePictureUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop';
+            
+            // Default properties are used if the database field is missing.
+            localProperties = data.properties || [
+                { id: 'villa1', title: 'Modern Villa', location: 'denpasar', type: 'villa', imageUrl: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop' },
+                { id: 'ruko1', title: 'Family Home', location: 'gianyar', type: 'ruko', imageUrl: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop' },
+            ];
+            
+            populateFilters();
+            renderProperties();
+        }
+
+        async function writeToDb(data) {
+            if (!auth.currentUser) {
+                console.error("No authorized user is logged in. Cannot save.");
+                return;
+            }
+            try {
+                await setDoc(getDocRef(), data, { merge: true });
+                console.log("Data saved successfully.");
+            } catch (error) {
+                console.error("Error writing to Firestore:", error);
+            }
+        }
+        
+        window.saveText = async (elementId) => {
+            const key = elementId.replace(/-(\w)/g, (_, c) => c.toUpperCase());
+            const content = document.getElementById(elementId).textContent;
+            await writeToDb({ [key]: content });
+        };
+        
+        window.savePropertyText = async (propId, text) => {
+            const properties = localProperties.map(p => p.id === propId ? { ...p, title: text } : p);
+            await writeToDb({ properties });
+        }
+
+        window.saveImage = async () => {
+            const newUrl = document.getElementById('image-url-input').value;
+            if (!newUrl.startsWith('http')) return;
+            if (currentPropertyId) {
+                const properties = localProperties.map(p => p.id === currentPropertyId ? { ...p, imageUrl: newUrl } : p);
+                await writeToDb({ properties });
+            } else if (currentImageElementId === 'profile-picture') {
+                await writeToDb({ profilePictureUrl: newUrl });
+            }
+            closeModal('image-modal');
+        };
+
+        window.addProperty = async () => {
+            const newProp = {
+                id: 'prop' + Date.now(),
+                title: document.getElementById('new-property-title').value,
+                location: document.getElementById('new-property-location').value.toLowerCase(),
+                type: document.getElementById('new-property-type').value.toLowerCase(),
+                imageUrl: document.getElementById('new-property-image').value,
+            };
+            if (!newProp.title || !newProp.location || !newProp.type || !newProp.imageUrl) {
+                 document.getElementById('login-error').textContent = "Please fill all property fields.";
+                 document.getElementById('login-error').classList.remove('hidden');
+                return;
+            }
+            await updateDoc(getDocRef(), { properties: arrayUnion(newProp) });
+            closeModal('property-modal');
+        }
+        
+        function populateFilters() {
+            const locationFilter = document.getElementById('location-filter');
+            const typeFilter = document.getElementById('type-filter');
+            const locations = [...new Set(localProperties.map(p => p.location))];
+            const types = [...new Set(localProperties.map(p => p.type))];
+            locationFilter.innerHTML = '<option value="all">All Locations</option>';
+            typeFilter.innerHTML = '<option value="all">All Types</option>';
+            locations.forEach(loc => locationFilter.add(new Option(loc.charAt(0).toUpperCase() + loc.slice(1), loc)));
+            types.forEach(t => typeFilter.add(new Option(t.charAt(0).toUpperCase() + t.slice(1), t)));
+        }
+
+        function renderProperties() {
+            const grid = document.getElementById('property-grid');
+            grid.innerHTML = '';
+            const locationFilter = document.getElementById('location-filter').value;
+            const typeFilter = document.getElementById('type-filter').value;
+            const filtered = localProperties.filter(p => (locationFilter === 'all' || p.location === locationFilter) && (typeFilter === 'all' || p.type === typeFilter));
+            filtered.forEach(prop => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-md overflow-hidden group';
+                card.innerHTML = `<div class="relative"><img id="img-${prop.id}" src="${prop.imageUrl}" alt="${prop.title}" class="w-full h-48 object-cover"><div class="admin-controls property-card-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"><button onclick="window.openImageModal('${prop.id}')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button></div></div><div class="p-4"><h3 id="title-${prop.id}" onblur="window.savePropertyText('${prop.id}', this.textContent)" class="editable text-xl font-semibold p-1 rounded">${prop.title}</h3></div>`;
+                grid.appendChild(card);
+            });
+            toggleAdminMode(!!auth.currentUser);
+        }
+        
+        // --- Auth Functions ---
+        window.login = async () => {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            const errorEl = document.getElementById('login-error');
+            errorEl.classList.add('hidden');
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                closeModal('login-modal');
+            } catch (error) {
+                errorEl.textContent = error.message;
+                errorEl.classList.remove('hidden');
+                console.error("Login failed:", error);
+            }
+        }
+        
+        window.logout = async () => {
+            await signOut(auth);
+        }
+
+        // --- UI Event Listeners ---
+        window.openModal = (modalId) => {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.getElementById(modalId).classList.add('flex');
+        }
+        window.closeModal = (modalId) => {
+            document.getElementById(modalId).classList.add('hidden');
+            document.getElementById(modalId).classList.remove('flex');
+        }
+        window.openImageModal = (propId, elementId) => {
+            currentPropertyId = propId;
+            currentImageElementId = elementId;
+            openModal('image-modal');
+        };
+        
+        document.getElementById('login-btn').addEventListener('click', () => openModal('login-modal'));
+        document.getElementById('mobile-login-btn').addEventListener('click', () => openModal('login-modal'));
+        document.getElementById('logout-btn').addEventListener('click', logout);
+        document.getElementById('mobile-logout-btn').addEventListener('click', logout);
+        document.getElementById('location-filter').addEventListener('change', renderProperties);
+        document.getElementById('type-filter').addEventListener('change', renderProperties);
+        document.getElementById('add-property-btn').addEventListener('click', () => openModal('property-modal'));
+        document.getElementById('mobile-menu-button').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
+
+        // --- Start App ---
+        initializeFirebase();
+
     </script>
 </body>
 </html>
