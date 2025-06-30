@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bli Made Properties | Made Arya</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom styles for an elegant touch */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* A very light grey for a soft background */
+        }
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .card-hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-900">Bli Made<span class="text-blue-600">.</span></a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="text-gray-600 hover:text-blue-600 transition duration-300">About</a>
+                <a href="#properties" class="text-gray-600 hover:text-blue-600 transition duration-300">Properties</a>
+                <a href="#agent" class="text-gray-600 hover:text-blue-600 transition duration-300">Our Agent</a>
+                <a href="#contact" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Contact Us</a>
+            </div>
+            <button class="md:hidden focus:outline-none" id="mobile-menu-button">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-100">About</a>
+            <a href="#properties" class="block py-2 px-6 text-sm hover:bg-gray-100">Properties</a>
+            <a href="#agent" class="block py-2 px-6 text-sm hover:bg-gray-100">Our Agent</a>
+            <a href="#contact" class="block py-2 px-6 text-sm hover:bg-gray-100">Contact Us</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white">
+        <div class="bg-black/50 min-h-[60vh] flex items-center">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Find Your Next Chapter</h1>
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">We specialize in connecting discerning buyers with exceptional properties. Your dream home is waiting.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-12 md:py-20">
+        <!-- About Us Section -->
+        <section id="about" class="mb-16 md:mb-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose Bli Made?</h2>
+            <p class="max-w-3xl mx-auto text-gray-600">
+                At Bli Made Properties, we're not just selling homes; we're curating lifestyles. With over a decade of experience in the luxury market, we bring a sophisticated, data-driven, and deeply personal approach to real estate. Our commitment to integrity and excellence is unwavering.
+            </p>
+        </section>
+
+        <!-- Featured Properties Section -->
+        <section id="properties" class="mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Featured Properties</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Property Card 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg card-hover-effect">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop" alt="Modern Villa" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/4a5568?text=Image+Not+Found';">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">The Glass House</h3>
+                        <p class="text-gray-600 mb-4">Gatsu, Denpasar</p>
+                        <p class="text-2xl font-semibold text-blue-600 mb-4">IDR 3,500,000,000</p>
+                        <div class="flex justify-between text-sm text-gray-600 border-t pt-4">
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg> 4 Beds
+                            </span>
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 5 Baths
+                            </span>
+                             <span class="flex items-center">
+                               <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V4h4M4 4l5 5m11-1v4h-4m4-4l-5 5M4 16v4h4m-4-4l5-5m11 5v-4h-4m4 4l-5-5"></path></svg> 3,900 m²
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Property Card 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg card-hover-effect">
+                    <img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?q=80&w=1974&auto=format&fit=crop" alt="Seaside Retreat" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/4a5568?text=Image+Not+Found';">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Oceanview Sanctuary</h3>
+                        <p class="text-gray-600 mb-4">Saba, Gianyar</p>
+                        <p class="text-2xl font-semibold text-blue-600 mb-4">IDR 5,250,000,000</p>
+                        <div class="flex justify-between text-sm text-gray-600 border-t pt-4">
+                           <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg> 5 Beds
+                            </span>
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 6 Baths
+                            </span>
+                             <span class="flex items-center">
+                               <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V4h4M4 4l5 5m11-1v4h-4m4-4l-5 5M4 16v4h4m-4-4l5-5m11 5v-4h-4m4 4l-5-5"></path></svg> 5,100 m²
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Property Card 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg card-hover-effect">
+                    <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=2070&auto=format&fit=crop" alt="Urban Loft" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/4a5568?text=Image+Not+Found';">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Downtown Penthouse</h3>
+                        <p class="text-gray-600 mb-4">Keliki, Tegallalang</p>
+                        <p class="text-2xl font-semibold text-blue-600 mb-4">IDR 2,100,000,000</p>
+                        <div class="flex justify-between text-sm text-gray-600 border-t pt-4">
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg> 2 Beds
+                            </span>
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> 2 Baths
+                            </span>
+                             <span class="flex items-center">
+                               <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 8V4h4M4 4l5 5m11-1v4h-4m4-4l-5 5M4 16v4h4m-4-4l5-5m11 5v-4h-4m4 4l-5-5"></path></svg> 2,600 m²
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Agent Section -->
+        <section id="agent" class="bg-white p-8 md:p-12 rounded-lg shadow-md flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop" 
+                 alt="Real Estate Agent Jane Doe" 
+                 class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 border-blue-200"
+                 onerror="this.onerror=null;this.src='https://placehold.co/200x200/e2e8f0/4a5568?text=Agent';">
+            <div class="text-center md:text-left">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2">Meet Your Agent</h2>
+                <h3 class="text-xl font-semibold text-blue-600 mb-3">Bli Made</h3>
+                <p class="text-gray-600 max-w-lg">
+                    With a passion for architecture and a deep understanding of the market, Bli Made has successfully guided hundreds of clients to their perfect homes. Her meticulous attention to detail and dedication to client satisfaction make her a trusted advisor in your property journey.
+                </p>
+                <a href="#contact" class="mt-4 inline-block text-blue-600 font-semibold hover:underline">Connect with Bli Made →</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer / Contact Section -->
+    <footer id="contact" class="bg-gray-900 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Bli Made<span class="text-blue-500">.</span></h3>
+                    <p class="text-gray-400">Your key to exceptional living.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="mailto:aryagnwn@gmail.com" class="hover:text-white">aryagnwn@gmail.com</a></li>
+                        <li><a href="tel:+62 857-3722-2705" class="hover:text-white">+62 857-3722-2705</a></li>
+                        <li>Br. Pejeng aji, Tegallalang, Gianyar, Bali 80561</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                    <div class="flex justify-center md:justify-start space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.792 2.792c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.792 2.792c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.792-2.792c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 012.792-2.792c.636-.247 1.363.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 8.118c-2.146 0-3.882 1.736-3.882 3.882s1.736 3.882 3.882 3.882 3.882-1.736 3.882-3.882-1.736-3.882-3.882-3.882zM12 14.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM16.882 8.292a1.156 1.156 0 100-2.312 1.156 1.156 0 000 2.312z" clip-rule="evenodd" /></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 Bli Made. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        const menuLinks = document.querySelectorAll('#mobile-menu a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
