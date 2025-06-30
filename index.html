@@ -16,7 +16,6 @@
         .group:hover .property-card-overlay { opacity: 1; }
         .hero-bg { background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; }
         .custom-select { -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1em; padding-right: 2.5rem; }
-        /* Hide admin controls by default */
         .admin-controls { display: none; }
     </style>
 </head>
@@ -106,7 +105,7 @@
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-editable-website';
 
-        let auth, db, app;
+        let auth, db;
         let localProperties = [];
         let currentImageElementId = null;
         let currentPropertyId = null;
@@ -114,23 +113,25 @@
 
         async function initializeAppLogic() {
             if (!firebaseConfig || !firebaseConfig.apiKey) {
-                console.error("Firebase config is missing or invalid. App cannot be initialized.");
                 document.getElementById('app-body').innerHTML = '<div class="p-4 text-center text-red-600 bg-red-100">Firebase configuration is missing. The application cannot start.</div>';
                 return;
             }
             
-            app = initializeApp(firebaseConfig);
+            const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
 
             onAuthStateChanged(auth, user => {
+                // This is the main controller. It fires whenever the auth state changes.
+                // It ensures the UI and data listeners are always in sync with the user's status.
+                if (unsubscribe) unsubscribe(); // Detach old listener
+                listenForContentChanges(); // Attach new listener for the current user
                 toggleAdminMode(user && !user.isAnonymous);
-                if (unsubscribe) unsubscribe();
-                listenForContentChanges();
             });
-            
+
+            // Initial sign-in for new visitors
             if (!auth.currentUser) {
-                await signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed", error));
+                signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed", error));
             }
         }
         
@@ -139,14 +140,13 @@
         }
 
         function listenForContentChanges() {
-            if (!auth || !auth.currentUser) return;
-            
+            // This function is now only called when an authenticated user (anonymous or admin) exists.
             unsubscribe = onSnapshot(getDocRef(), (docSnap) => {
                 const data = docSnap.exists() ? docSnap.data() : {};
                 updatePageContent(data);
             }, (error) => {
                 console.error("Firestore read failed: ", error);
-                 document.getElementById('property-grid').innerHTML = `<p class="col-span-full text-center text-red-500">Error: Could not load property data. Check Firestore rules.</p>`;
+                document.getElementById('property-grid').innerHTML = `<p class="col-span-full text-center text-red-500">Error: Could not load property data. Check Firestore rules.</p>`;
             });
         }
 
@@ -162,6 +162,8 @@
             document.getElementById('logout-btn').style.display = isAdmin ? 'block' : 'none';
             document.getElementById('mobile-login-btn').style.display = isAdmin ? 'none' : 'block';
             document.getElementById('mobile-logout-btn').style.display = isAdmin ? 'block' : 'none';
+            // Also toggle visibility for dynamically created elements
+            renderProperties(); 
         }
         
         function updatePageContent(data) {
@@ -246,6 +248,7 @@
 
         function renderProperties() {
             const grid = document.getElementById('property-grid');
+            const isAdmin = auth.currentUser && !auth.currentUser.isAnonymous;
             grid.innerHTML = '';
             const locationFilter = document.getElementById('location-filter').value;
             const typeFilter = document.getElementById('type-filter').value;
@@ -253,7 +256,7 @@
             filtered.forEach(prop => {
                 const card = document.createElement('div');
                 card.className = 'bg-white rounded-lg shadow-md overflow-hidden group';
-                card.innerHTML = `<div class="relative"><img id="img-${prop.id}" src="${prop.imageUrl}" alt="${prop.title}" class="w-full h-48 object-cover"><div class="admin-controls property-card-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"><button onclick="window.openImageModal('${prop.id}')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button></div></div><div class="p-4"><h3 id="title-${prop.id}" onblur="window.savePropertyText('${prop.id}', this.textContent)" class="editable text-xl font-semibold p-1 rounded">${prop.title}</h3></div>`;
+                card.innerHTML = `<div class="relative"><img id="img-${prop.id}" src="${prop.imageUrl}" alt="${prop.title}" class="w-full h-48 object-cover"><div class="admin-controls property-card-overlay absolute inset-0 bg-black bg-opacity-50 ${isAdmin ? 'flex' : 'hidden'} items-center justify-center"><button onclick="window.openImageModal('${prop.id}')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button></div></div><div class="p-4"><h3 id="title-${prop.id}" onblur="window.savePropertyText('${prop.id}', this.textContent)" class="editable text-xl font-semibold p-1 rounded" contenteditable="${isAdmin}" data-admin-enabled="${isAdmin}">${prop.title}</h3></div>`;
                 grid.appendChild(card);
             });
         }
@@ -278,7 +281,6 @@
         
         window.logout = async () => {
             await signOut(auth);
-            await signInAnonymously(auth);
         }
 
         window.openModal = (modalId) => {
