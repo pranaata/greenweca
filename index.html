@@ -110,9 +110,9 @@
         let localProperties = [];
         let currentImageElementId = null;
         let currentPropertyId = null;
-        let unsubscribe; // To hold the listener function
+        let unsubscribe;
 
-        async function initializeFirebase() {
+        async function initializeAppLogic() {
             if (!firebaseConfig || !firebaseConfig.apiKey) {
                 console.error("Firebase config is missing or invalid. App cannot be initialized.");
                 document.getElementById('app-body').innerHTML = '<div class="p-4 text-center text-red-600 bg-red-100">Firebase configuration is missing. The application cannot start.</div>';
@@ -124,27 +124,22 @@
             db = getFirestore(app);
 
             onAuthStateChanged(auth, user => {
-                toggleAdminMode(!!user);
-                // Detach any existing listener before creating a new one
-                if (unsubscribe) {
-                    unsubscribe();
-                }
-                // Now, attach the listener.
-                listenForContentChanges(); 
+                toggleAdminMode(user && !user.isAnonymous);
+                if (unsubscribe) unsubscribe();
+                listenForContentChanges();
             });
             
-            // Sign in visitors anonymously to allow read access
-            // This is crucial for the database rules to work for public viewers
-            await signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed", error));
+            if (!auth.currentUser) {
+                await signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed", error));
+            }
         }
         
         function getDocRef() {
-            // FIX: Corrected path for public data access to have an even number of segments.
             return doc(db, "artifacts", appId, "public/data/pageContent/main");
         }
 
         function listenForContentChanges() {
-            if (!auth.currentUser) return; // Don't listen if there's no user (even anonymous)
+            if (!auth || !auth.currentUser) return;
             
             unsubscribe = onSnapshot(getDocRef(), (docSnap) => {
                 const data = docSnap.exists() ? docSnap.data() : {};
@@ -183,7 +178,6 @@
             
             populateFilters();
             renderProperties();
-            toggleAdminMode(!!auth.currentUser && !auth.currentUser.isAnonymous);
         }
 
         async function writeToDb(data) {
@@ -264,14 +258,12 @@
             });
         }
         
-        // --- Auth Functions ---
         window.login = async () => {
             const email = document.getElementById('email-input').value;
             const password = document.getElementById('password-input').value;
             const errorEl = document.getElementById('login-error');
             errorEl.classList.add('hidden');
             try {
-                // If there's an anonymous user, they must be signed out before a real user can sign in.
                 if (auth.currentUser && auth.currentUser.isAnonymous) {
                     await signOut(auth);
                 }
@@ -286,11 +278,9 @@
         
         window.logout = async () => {
             await signOut(auth);
-            // After admin logs out, sign back in anonymously for public read access.
             await signInAnonymously(auth);
         }
 
-        // --- UI Event Listeners ---
         window.openModal = (modalId) => {
             document.getElementById(modalId).classList.remove('hidden');
             document.getElementById(modalId).classList.add('flex');
@@ -314,8 +304,7 @@
         document.getElementById('add-property-btn').addEventListener('click', () => openModal('property-modal'));
         document.getElementById('mobile-menu-button').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
 
-        // --- Start App ---
-        initializeFirebase();
+        initializeAppLogic();
 
     </script>
 </body>
