@@ -22,7 +22,6 @@
 </head>
 <body class="text-gray-800">
 
-    <!-- Header Navigation -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-gray-900">Bli Made<span class="text-blue-600">.</span></a>
@@ -46,117 +45,114 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-bg text-white w-full">
-        <div class="bg-black/50 min-h-[50vh] flex items-center justify-center">
-            <div class="text-center px-6">
-                <h1 id="hero-title" class="editable text-4xl md:text-6xl font-bold leading-tight mb-4 p-2 rounded"></h1>
-                <p id="hero-subtitle" class="editable text-lg md:text-xl text-gray-200 max-w-3xl mx-auto p-2 rounded"></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content Area -->
-    <main class="container mx-auto px-6 py-12 md:py-20">
-        <!-- Properties Section -->
-        <section id="properties">
-            <h2 class="text-3xl font-bold mb-4 text-center">Properties</h2>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <div class="relative"><select id="location-filter" class="custom-select w-full sm:w-48 border border-gray-300 rounded-lg p-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All Locations</option></select></div>
-                <div class="relative"><select id="type-filter" class="custom-select w-full sm:w-48 border border-gray-300 rounded-lg p-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All Types</option></select></div>
-            </div>
-            <div id="property-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
-            <div id="add-property-container" class="admin-controls text-center mt-8">
-                 <button id="add-property-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">Add New Property</button>
-            </div>
-        </section>
-        
-        <!-- Profile Section -->
-        <section id="about" class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mt-20 bg-white p-10 rounded-lg shadow-sm">
-            <div class="relative group">
-                <img id="profile-picture" alt="Profile Picture" class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md">
-                <div class="admin-controls absolute inset-0 rounded-full bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
-                    <button onclick="window.openImageModal(null, 'profile-picture')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change</button>
+    <div id="app-body">
+        <section class="hero-bg text-white w-full">
+            <div class="bg-black/50 min-h-[50vh] flex items-center justify-center">
+                <div class="text-center px-6">
+                    <h1 id="hero-title" class="editable text-4xl md:text-6xl font-bold leading-tight mb-4 p-2 rounded"></h1>
+                    <p id="hero-subtitle" class="editable text-lg md:text-xl text-gray-200 max-w-3xl mx-auto p-2 rounded"></p>
                 </div>
             </div>
-            <div class="text-center md:text-left flex-1">
-                <h1 id="profile-title" class="editable text-3xl md:text-4xl font-bold mb-2 p-2 rounded"></h1>
-                <p id="profile-description" class="editable text-gray-600 p-2 rounded"></p>
-            </div>
         </section>
-    </main>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-gray-800 text-gray-300 w-full mt-20">
-         <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-                <div><h3 class="text-xl font-bold mb-4 text-white">Bli Made<span class="text-blue-500">.</span></h3><p class="text-gray-400">Your key to exceptional living.</p></div>
-                <div><h3 class="text-lg font-semibold mb-4 text-white">Contact Us</h3><ul class="space-y-2 text-gray-400"><li><a href="mailto:aryagnwn@gmail.com" class="hover:text-white transition">aryagnwn@gmail.com</a></li><li><a href="tel:+6285737222705" class="hover:text-white transition">+62 857-3722-2705</a></li><li>Br. Pejeng aji, Tegallalang, Gianyar, Bali 80561</li></ul></div>
-                <div><h3 class="text-lg font-semibold mb-4 text-white">Follow Us</h3><div class="flex justify-center md:justify-start space-x-4"><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path></svg></a><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg></a><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.792 2.792c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.792 2.792c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.792-2.792c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 012.792-2.792c.636-.247 1.363.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 8.118c-2.146 0-3.882 1.736-3.882 3.882s1.736 3.882 3.882 3.882 3.882-1.736 3.882-3.882-1.736-3.882-3.882-3.882zM12 14.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM16.882 8.292a1.156 1.156 0 100-2.312 1.156 1.156 0 000 2.312z" clip-rule="evenodd"></path></svg></a></div></div>
-            </div>
-            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm"><p>&copy; 2025 Bli Made. All Rights Reserved.</p></div>
-        </div>
-    </footer>
+        <main class="container mx-auto px-6 py-12 md:py-20">
+            <section id="properties">
+                <h2 class="text-3xl font-bold mb-4 text-center">Properties</h2>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                    <div class="relative"><select id="location-filter" class="custom-select w-full sm:w-48 border border-gray-300 rounded-lg p-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All Locations</option></select></div>
+                    <div class="relative"><select id="type-filter" class="custom-select w-full sm:w-48 border border-gray-300 rounded-lg p-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All Types</option></select></div>
+                </div>
+                <div id="property-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+                <div id="add-property-container" class="admin-controls text-center mt-8">
+                     <button id="add-property-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">Add New Property</button>
+                </div>
+            </section>
+            
+            <section id="about" class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mt-20 bg-white p-10 rounded-lg shadow-sm">
+                <div class="relative group">
+                    <img id="profile-picture" alt="Profile Picture" class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md">
+                    <div class="admin-controls absolute inset-0 rounded-full bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
+                        <button onclick="window.openImageModal(null, 'profile-picture')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change</button>
+                    </div>
+                </div>
+                <div class="text-center md:text-left flex-1">
+                    <h1 id="profile-title" class="editable text-3xl md:text-4xl font-bold mb-2 p-2 rounded"></h1>
+                    <p id="profile-description" class="editable text-gray-600 p-2 rounded"></p>
+                </div>
+            </section>
+        </main>
 
-    <!-- Modals -->
-    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-        <div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-sm">
-            <h3 class="text-xl font-bold mb-4">Admin Login</h3>
-            <div class="space-y-4">
-                <input type="email" id="email-input" placeholder="Email" class="w-full border p-2 rounded">
-                <input type="password" id="password-input" placeholder="Password" class="w-full border p-2 rounded">
+        <footer id="contact" class="bg-gray-800 text-gray-300 w-full mt-20">
+             <div class="container mx-auto px-6 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                    <div><h3 class="text-xl font-bold mb-4 text-white">Bli Made<span class="text-blue-500">.</span></h3><p class="text-gray-400">Your key to exceptional living.</p></div>
+                    <div><h3 class="text-lg font-semibold mb-4 text-white">Contact Us</h3><ul class="space-y-2 text-gray-400"><li><a href="mailto:aryagnwn@gmail.com" class="hover:text-white transition">aryagnwn@gmail.com</a></li><li><a href="tel:+6285737222705" class="hover:text-white transition">+62 857-3722-2705</a></li><li>Br. Pejeng aji, Tegallalang, Gianyar, Bali 80561</li></ul></div>
+                    <div><h3 class="text-lg font-semibold mb-4 text-white">Follow Us</h3><div class="flex justify-center md:justify-start space-x-4"><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path></svg></a><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg></a><a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.792 2.792c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.792 2.792c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.792-2.792c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 012.792-2.792c.636-.247 1.363.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 8.118c-2.146 0-3.882 1.736-3.882 3.882s1.736 3.882 3.882 3.882 3.882-1.736 3.882-3.882-1.736-3.882-3.882-3.882zM12 14.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM16.882 8.292a1.156 1.156 0 100-2.312 1.156 1.156 0 000 2.312z" clip-rule="evenodd"></path></svg></a></div></div>
+                </div>
+                <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm"><p>&copy; 2025 Bli Made. All Rights Reserved.</p></div>
             </div>
-            <p id="login-error" class="text-red-500 text-sm mt-2 hidden"></p>
-            <div class="flex justify-end space-x-4 mt-6">
-                <button onclick="closeModal('login-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
-                <button onclick="login()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</button>
-            </div>
-        </div>
+        </footer>
     </div>
+
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"><div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-sm"><h3 class="text-xl font-bold mb-4">Admin Login</h3><div class="space-y-4"><input type="email" id="email-input" placeholder="Email" class="w-full border p-2 rounded"><input type="password" id="password-input" placeholder="Password" class="w-full border p-2 rounded"></div><p id="login-error" class="text-red-500 text-sm mt-2 hidden"></p><div class="flex justify-end space-x-4 mt-6"><button onclick="closeModal('login-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button><button onclick="login()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</button></div></div></div>
     <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"><div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-md"><h3 class="text-xl font-bold mb-4">Change Image</h3><p class="text-sm text-gray-600 mb-4">Paste the new image URL below:</p><input type="text" id="image-url-input" class="w-full border p-2 rounded mb-4" placeholder="https://example.com/image.jpg"><div class="flex justify-end space-x-4"><button onclick="closeModal('image-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button><button onclick="saveImage()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button></div></div></div>
     <div id="property-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"><div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-md"><h3 class="text-xl font-bold mb-4">Add New Property</h3><div class="space-y-4"><input type="text" id="new-property-title" placeholder="Property Title" class="w-full border p-2 rounded"><input type="text" id="new-property-location" placeholder="Location (e.g., Denpasar)" class="w-full border p-2 rounded"><input type="text" id="new-property-type" placeholder="Type (e.g., Villa)" class="w-full border p-2 rounded"><input type="text" id="new-property-image" placeholder="Image URL" class="w-full border p-2 rounded"></div><div class="flex justify-end space-x-4 mt-6"><button onclick="closeModal('property-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button><button onclick="addProperty()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Property</button></div></div></div>
 
-    <!-- Firebase and App Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-editable-website';
 
-        let auth, db;
+        let auth, db, app;
         let localProperties = [];
         let currentImageElementId = null;
         let currentPropertyId = null;
+        let unsubscribe; // To hold the listener function
 
         async function initializeFirebase() {
-            const app = initializeApp(firebaseConfig);
+            if (!firebaseConfig || !firebaseConfig.apiKey) {
+                console.error("Firebase config is missing or invalid. App cannot be initialized.");
+                document.getElementById('app-body').innerHTML = '<div class="p-4 text-center text-red-600 bg-red-100">Firebase configuration is missing. The application cannot start.</div>';
+                return;
+            }
+            
+            app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
+
             onAuthStateChanged(auth, user => {
-                if (user) {
-                    console.log("Admin logged in:", user.email);
-                    toggleAdminMode(true);
-                } else {
-                    console.log("User logged out.");
-                    toggleAdminMode(false);
+                toggleAdminMode(!!user);
+                // Detach any existing listener before creating a new one
+                if (unsubscribe) {
+                    unsubscribe();
                 }
+                // Now, attach the listener.
+                listenForContentChanges(); 
             });
-            listenForContentChanges();
+            
+            // Sign in visitors anonymously to allow read access
+            // This is crucial for the database rules to work for public viewers
+            await signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed", error));
         }
         
         function getDocRef() {
-            return doc(db, "artifacts", appId, "public/data/pageContent", "main");
+            // FIX: Corrected path for public data access to have an even number of segments.
+            return doc(db, "artifacts", appId, "public/data/pageContent/main");
         }
 
         function listenForContentChanges() {
-            onSnapshot(getDocRef(), (docSnap) => {
-                // FIX: If doc exists, use its data. Otherwise, use an empty object.
-                // This ensures updatePageContent is always called and can apply defaults.
+            if (!auth.currentUser) return; // Don't listen if there's no user (even anonymous)
+            
+            unsubscribe = onSnapshot(getDocRef(), (docSnap) => {
                 const data = docSnap.exists() ? docSnap.data() : {};
                 updatePageContent(data);
-            }, console.error);
+            }, (error) => {
+                console.error("Firestore read failed: ", error);
+                 document.getElementById('property-grid').innerHTML = `<p class="col-span-full text-center text-red-500">Error: Could not load property data. Check Firestore rules.</p>`;
+            });
         }
 
         function toggleAdminMode(isAdmin) {
@@ -171,20 +167,15 @@
             document.getElementById('logout-btn').style.display = isAdmin ? 'block' : 'none';
             document.getElementById('mobile-login-btn').style.display = isAdmin ? 'none' : 'block';
             document.getElementById('mobile-logout-btn').style.display = isAdmin ? 'block' : 'none';
-            document.querySelectorAll('.group .property-card-overlay').forEach(el => {
-                el.style.display = isAdmin ? '' : 'none';
-            });
         }
         
         function updatePageContent(data) {
-            // Default content is now used if the database field is missing.
             document.getElementById('hero-title').textContent = data.heroTitle || 'Find Your Next Chapter';
             document.getElementById('hero-subtitle').textContent = data.heroSubtitle || 'Your dream home is waiting.';
             document.getElementById('profile-title').textContent = data.profileTitle || 'About Bli Made';
             document.getElementById('profile-description').textContent = data.profileDescription || 'Edit this description.';
             document.getElementById('profile-picture').src = data.profilePictureUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop';
             
-            // Default properties are used if the database field is missing.
             localProperties = data.properties || [
                 { id: 'villa1', title: 'Modern Villa', location: 'denpasar', type: 'villa', imageUrl: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop' },
                 { id: 'ruko1', title: 'Family Home', location: 'gianyar', type: 'ruko', imageUrl: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop' },
@@ -192,11 +183,12 @@
             
             populateFilters();
             renderProperties();
+            toggleAdminMode(!!auth.currentUser && !auth.currentUser.isAnonymous);
         }
 
         async function writeToDb(data) {
-            if (!auth.currentUser) {
-                console.error("No authorized user is logged in. Cannot save.");
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+                console.error("No authorized admin is logged in. Cannot save.");
                 return;
             }
             try {
@@ -270,7 +262,6 @@
                 card.innerHTML = `<div class="relative"><img id="img-${prop.id}" src="${prop.imageUrl}" alt="${prop.title}" class="w-full h-48 object-cover"><div class="admin-controls property-card-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"><button onclick="window.openImageModal('${prop.id}')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button></div></div><div class="p-4"><h3 id="title-${prop.id}" onblur="window.savePropertyText('${prop.id}', this.textContent)" class="editable text-xl font-semibold p-1 rounded">${prop.title}</h3></div>`;
                 grid.appendChild(card);
             });
-            toggleAdminMode(!!auth.currentUser);
         }
         
         // --- Auth Functions ---
@@ -280,6 +271,10 @@
             const errorEl = document.getElementById('login-error');
             errorEl.classList.add('hidden');
             try {
+                // If there's an anonymous user, they must be signed out before a real user can sign in.
+                if (auth.currentUser && auth.currentUser.isAnonymous) {
+                    await signOut(auth);
+                }
                 await signInWithEmailAndPassword(auth, email, password);
                 closeModal('login-modal');
             } catch (error) {
@@ -291,6 +286,8 @@
         
         window.logout = async () => {
             await signOut(auth);
+            // After admin logs out, sign back in anonymously for public read access.
+            await signInAnonymously(auth);
         }
 
         // --- UI Event Listeners ---
