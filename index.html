@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properti Bali|Bli Made</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        /* Style for the editable text areas */
+        [contenteditable]:focus {
+            outline: 2px solid #3b82f6; /* Blue outline on focus */
+            background-color: #eff6ff;
+            border-radius: 4px;
+        }
+        /* A subtle hover effect to indicate editability */
+        [contenteditable]:hover {
+            background-color: #f3f4f6;
+            cursor: text;
+        }
+        .property-card-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .group:hover .property-card-overlay {
+            opacity: 1;
+        }
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-900">Bli Made<span class="text-blue-600">.</span></a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Home</a>
+                <a href="#properties" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Properties</a>
+                <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">About Us</a>
+            </div>
+            <button class="md:hidden focus:outline-none" id="mobile-menu-button">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <a href="#" class="block py-2 px-6 text-sm hover:bg-gray-100">Home</a>
+            <a href="#properties" class="block py-2 px-6 text-sm hover:bg-gray-100">Properties</a>
+            <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-100">About Us</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white w-full">
+        <div class="bg-black/50 min-h-[50vh] flex items-center justify-center">
+            <div class="text-center px-6">
+                <h1 id="hero-title" contenteditable="true" onblur="saveText('hero-title')" class="text-4xl md:text-6xl font-bold leading-tight mb-4 p-2 rounded">Find Your Next Chapter</h1>
+                <p id="hero-subtitle" contenteditable="true" onblur="saveText('hero-subtitle')" class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto p-2 rounded">We specialize in connecting discerning buyers with exceptional properties. Your dream home is waiting.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-12 md:py-20">
+        <!-- Properties Section -->
+        <section id="properties">
+            <h2 class="text-3xl font-bold mb-8 text-center">Properties</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- Property Card: Villa -->
+                <div id="villa" class="bg-white rounded-lg shadow-md overflow-hidden group">
+                    <div class="relative">
+                        <img id="villa-img" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop" alt="Villa" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
+                            <button onclick="openImageModal('villa-img')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 id="villa-title" contenteditable="true" onblur="saveText('villa-title')" class="text-xl font-semibold p-1 rounded">Modern Villa</h3>
+                    </div>
+                </div>
+
+                <!-- Property Card: Ruko -->
+                <div id="ruko" class="bg-white rounded-lg shadow-md overflow-hidden group">
+                     <div class="relative">
+                        <img id="ruko-img" src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop" alt="Ruko" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
+                            <button onclick="openImageModal('ruko-img')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 id="ruko-title" contenteditable="true" onblur="saveText('ruko-title')" class="text-xl font-semibold p-1 rounded">Family Home</h3>
+                    </div>
+                </div>
+
+                <!-- Property Card: Freehold -->
+                <div id="freehold" class="bg-white rounded-lg shadow-md overflow-hidden group">
+                     <div class="relative">
+                        <img id="freehold-img" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop" alt="Freehold" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
+                            <button onclick="openImageModal('freehold-img')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 id="freehold-title" contenteditable="true" onblur="saveText('freehold-title')" class="text-xl font-semibold p-1 rounded">Freehold</h3>
+                    </div>
+                </div>
+
+                <!-- Property Card: Leasehold -->
+                <div id="leasehold" class="bg-white rounded-lg shadow-md overflow-hidden group">
+                     <div class="relative">
+                        <img id="leasehold-img" src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto=format&fit=crop" alt="Leasehold" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
+                            <button onclick="openImageModal('leasehold-img')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change Image</button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 id="leasehold-title" contenteditable="true" onblur="saveText('leasehold-title')" class="text-xl font-semibold p-1 rounded">Leasehold</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Profile Section -->
+        <section id="about" class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mt-20 bg-white p-10 rounded-lg shadow-sm">
+            <!-- Profile Picture -->
+            <div class="relative group">
+                <img id="profile-picture" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop" alt="Profile Picture" class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md">
+                <div class="absolute inset-0 rounded-full bg-black bg-opacity-50 flex items-center justify-center property-card-overlay">
+                    <button onclick="openImageModal('profile-picture')" class="text-white bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Change</button>
+                </div>
+            </div>
+            <!-- Profile Title and Description -->
+            <div class="text-center md:text-left flex-1">
+                <h1 id="profile-title" contenteditable="true" onblur="saveText('profile-title')" class="text-3xl md:text-4xl font-bold mb-2 p-2 rounded">About Bli Made</h1>
+                <p id="profile-description" contenteditable="true" onblur="saveText('profile-description')" class="text-gray-600 p-2 rounded">This is a description about the person or the agency. You can click here to edit this text. It will be saved automatically when you click away.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer / Contact Section -->
+    <footer id="contact" class="bg-gray-800 text-gray-300 w-full mt-20">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-white">Bli Made<span class="text-blue-500">.</span></h3>
+                    <p class="text-gray-400">Your key to exceptional living.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-white">Contact Us</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="mailto:aryagnwn@gmail.com" class="hover:text-white transition">aryagnwn@gmail.com</a></li>
+                        <li><a href="tel:+6285737222705" class="hover:text-white transition">+62 857-3722-2705</a></li>
+                        <li>Br. Pejeng aji, Tegallalang, Gianyar, Bali 80561</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-white">Follow Us</h3>
+                    <div class="flex justify-center md:justify-start space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.792 2.792c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.792 2.792c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.792-2.792c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 012.792-2.792c.636-.247 1.363.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 8.118c-2.146 0-3.882 1.736-3.882 3.882s1.736 3.882 3.882 3.882 3.882-1.736 3.882-3.882-1.736-3.882-3.882-3.882zM12 14.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM16.882 8.292a1.156 1.156 0 100-2.312 1.156 1.156 0 000 2.312z" clip-rule="evenodd" /></svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 Bli Made. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Edit Modal -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-11/12 max-w-md">
+            <h3 class="text-xl font-bold mb-4">Change Image</h3>
+            <p class="text-sm text-gray-600 mb-4">Paste the new image URL below:</p>
+            <input type="text" id="image-url-input" class="w-full border p-2 rounded mb-4" placeholder="https://example.com/image.jpg">
+            <div class="flex justify-end space-x-4">
+                <button onclick="closeImageModal()" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
+                <button onclick="saveImage()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Firebase and App Logic -->
+    <script type="module">
+        // --- Firebase Configuration ---
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config)
+            : { apiKey: "YOUR_API_KEY", authDomain: "...", projectId: "..." };
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-editable-website';
+
+        // --- Firebase Imports ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- App State ---
+        let auth, db, userId;
+        let currentImageElementId = null;
+        const FOLDER_NAME = 'pageContent';
+        const DOC_NAME = 'main';
+
+        // --- Firebase Initialization ---
+        async function initializeFirebase() {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    console.log("User authenticated with UID:", userId);
+                    listenForContentChanges();
+                } else {
+                    console.log("User not signed in. Attempting anonymous sign-in.");
+                    try {
+                        const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                        if (initialToken) {
+                            await signInWithCustomToken(auth, initialToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (error) {
+                        console.error("Authentication failed:", error);
+                    }
+                }
+            });
+        }
+        
+        // --- Firestore Data Handling ---
+        function getDocRef() {
+            // FIX: Corrected path to have an even number of segments.
+            return doc(db, "artifacts", appId, "users", userId, FOLDER_NAME, DOC_NAME);
+        }
+
+        function listenForContentChanges() {
+            if (!userId) return;
+            const docRef = getDocRef();
+
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    console.log("Updating page with data from Firestore:", data);
+                    updatePageContent(data);
+                } else {
+                    console.log("No content found. Creating initial document.");
+                    createInitialDocument();
+                }
+            }, (error) => {
+                console.error("Error listening to document:", error);
+            });
+        }
+
+        function updatePageContent(data) {
+            const contentMap = {
+                'hero-title': data.heroTitle || 'Find Your Next Chapter',
+                'hero-subtitle': data.heroSubtitle || 'Your dream home is waiting.',
+                'profile-title': data.profileTitle || 'About Bli Made',
+                'profile-description': data.profileDescription || 'Edit this description.',
+                'villa-title': data.villaTitle || 'Modern Villa',
+                'ruko-title': data.rukoTitle || 'Family Home',
+                'freehold-title': data.freeholdTitle || 'Freehold',
+                'leasehold-title': data.leaseholdTitle || 'Leasehold',
+                'profile-picture': data.profilePictureUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop',
+                'villa-img': data.villaImgUrl || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop',
+                'ruko-img': data.rukoImgUrl || 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop',
+                'freehold-img': data.freeholdImgUrl || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop',
+                'leasehold-img': data.leaseholdImgUrl || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto=format&fit=crop',
+            };
+
+            for (const [id, value] of Object.entries(contentMap)) {
+                const element = document.getElementById(id);
+                if (element) {
+                    if (element.tagName === 'IMG') {
+                        element.src = value;
+                    } else {
+                        element.textContent = value;
+                    }
+                }
+            }
+        }
+
+        async function createInitialDocument() {
+            if (!userId) return;
+            const docRef = getDocRef();
+            const initialData = {
+                heroTitle: document.getElementById('hero-title').textContent,
+                heroSubtitle: document.getElementById('hero-subtitle').textContent,
+                profileTitle: document.getElementById('profile-title').textContent,
+                profileDescription: document.getElementById('profile-description').textContent,
+                villaTitle: document.getElementById('villa-title').textContent,
+                rukoTitle: document.getElementById('ruko-title').textContent,
+                freeholdTitle: document.getElementById('freehold-title').textContent,
+                leaseholdTitle: document.getElementById('leasehold-title').textContent,
+                profilePictureUrl: document.getElementById('profile-picture').src,
+                villaImgUrl: document.getElementById('villa-img').src,
+                rukoImgUrl: document.getElementById('ruko-img').src,
+                freeholdImgUrl: document.getElementById('freehold-img').src,
+                leaseholdImgUrl: document.getElementById('leasehold-img').src,
+            };
+            try {
+                await setDoc(docRef, initialData);
+                console.log("Initial document created.");
+            } catch(error) {
+                console.error("Error creating initial document:", error);
+            }
+        }
+
+        window.saveText = async (elementId) => {
+            if (!userId) return;
+            const element = document.getElementById(elementId);
+            const content = element.textContent;
+            const key = elementId.replace(/-(\w)/g, (_, c) => c.toUpperCase());
+            try {
+                await setDoc(getDocRef(), { [key]: content }, { merge: true });
+                console.log(`Saved ${key}: ${content}`);
+            } catch (error) {
+                console.error("Error saving text:", error);
+            }
+        };
+
+        window.saveImage = async () => {
+            if (!userId || !currentImageElementId) return;
+            const newUrl = document.getElementById('image-url-input').value;
+            if (!newUrl || !newUrl.startsWith('http')) {
+                console.warn("Invalid URL provided for image.");
+                return;
+            };
+
+            const key = currentImageElementId.replace(/-(\w)/g, (_, c) => c.toUpperCase()) + 'Url';
+            try {
+                await setDoc(getDocRef(), { [key]: newUrl }, { merge: true });
+                console.log(`Saved ${key}: ${newUrl}`);
+                document.getElementById(currentImageElementId).src = newUrl;
+                closeImageModal();
+            } catch (error) {
+                console.error("Error saving image:", error);
+            }
+        };
+
+        // --- UI Interaction (Modal & Menu) ---
+        const modal = document.getElementById('image-modal');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+
+        window.openImageModal = (elementId) => {
+            currentImageElementId = elementId;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('image-url-input').focus();
+        };
+
+        window.closeImageModal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('image-url-input').value = '';
+            currentImageElementId = null;
+        };
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Start the App ---
+        initializeFirebase();
+    </script>
+</body>
+</html>
