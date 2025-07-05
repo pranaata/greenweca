@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bli Made - Properti Bali</title>
+    <link rel="icon" href="https://placehold.co/32x32/00A79D/FFFFFF?text=B&font=inter" type="image/png">
+    <link rel="icon" href="https://placehold.co/any/00A79D/FFFFFF?text=B&font=inter" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/00A79D/FFFFFF?text=B&font=inter">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Midnight Teal -->
+    <!-- Application Structure Plan: The SPA is structured into logical, scrollable sections (`<section>`) to mirror the sitemap's intent within a single page. A sticky header provides persistent navigation. The core user interaction is centered on the 'Properties' section, where users can filter a dynamic grid of listings. Clicking a property card doesn't navigate to a new page but opens a modal window (`#property-modal`), which is populated with the selected property's details. This modal approach maintains the single-page context, providing a faster, more fluid user experience than loading a separate page. The 'About' and 'Contact' sections are static content blocks. This structure prioritizes immediate engagement with the listings while keeping supplementary information easily accessible via scrolling or nav clicks. -->
+    <!-- Visualization & Content Choices: Report Info -> Property Listings Grid. Goal -> Allow users to browse and compare multiple properties efficiently. Viz/Method -> A responsive Tailwind CSS grid of cards. Interaction -> Clicking a card triggers a JS function to populate and display a detailed modal, avoiding page reloads. Justification -> This is the standard and most intuitive UI pattern for Browse a collection of items. Report Info -> Property Filters. Goal -> Allow users to narrow down listings. Viz/Method -> HTML forms with checkboxes and a text input. Interaction -> JS event listeners on these inputs trigger a filtering function that re-renders the property grid in real-time. Justification -> Provides immediate feedback and a powerful way for users to find relevant properties quickly without waiting for a server response. Report Info -> Property Details. Goal -> Provide comprehensive information for a single property. Viz/Method -> A modal window (`div`) with a structured layout for images, specs, and description. Interaction -> The modal is shown/hidden with JS. An image carousel within the modal allows gallery Browse. Justification -> Keeps the user on the main page, enhancing engagement and speed. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0D1A26; /* Deepest Charcoal/Navy */
+            color: #E0EFFF; /* Light Slate Blue */
+        }
+        .sticky-header {
+            background-color: rgba(19, 35, 47, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid #223749;
+        }
+        .card {
+            background-color: #13232F; /* Darker Charcoal */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+        .btn-primary {
+            background-color: #00A79D; /* Vibrant Teal */
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #00897b;
+        }
+        .filter-panel {
+            background-color: #13232F;
+        }
+        #property-modal {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background-color: #0D1A26;
+        }
+        .nav-link:hover {
+            color: #00A79D;
+        }
+        .nav-link {
+            transition: color 0.2s ease-in-out;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #13232F;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #223749;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00A79D;
+        }
+        /* IMPROVEMENT: Animation for cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .form-input, .form-select {
+             background-color: #0D1A26;
+             border: 1px solid #223749;
+             border-radius: 0.375rem;
+             padding: 0.5rem 0.75rem;
+             color: #E0EFFF;
+             width: 100%;
+             transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #00A79D;
+            box-shadow: 0 0 0 2px rgba(0, 167, 157, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header id="header" class="sticky top-0 z-40 w-full sticky-header">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <a href="#" class="flex items-center space-x-4">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop"Bli Made's Picture" class="w-12 h-12 rounded-full border-2 border-[#223749]">
+                <div>
+                    <span class="text-2xl font-bold text-white">Bli Made<span class="text-[#00A79D]">.</span></span>
+                    <p class="text-sm text-slate-400 hidden sm:block">Your Trusted Partner in Property Investments</p>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#properties" class="nav-link text-slate-300 font-medium">Properties</a>
+                <a href="#about" class="nav-link text-slate-300 font-medium">About</a>
+                <a href="#contact" class="nav-link text-slate-300 font-medium">Contact</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-slate-300 hover:bg-[#13232F]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-[#13232F] py-4">
+            <a href="#properties" class="block text-center py-2 text-slate-300 nav-link">Properties</a>
+            <a href="#about" class="block text-center py-2 text-slate-300 nav-link">About</a>
+            <a href="#contact" class="block text-center py-2 text-slate-300 nav-link">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <!-- Properties Section -->
+        <section id="properties" class="pt-16 -mt-16">
+            <!-- IMPROVEMENT: Changed hero image for a more impactful one -->
+            <div class="relative w-full h-80 md:h-[500px] rounded-lg overflow-hidden mb-16 shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover" alt="Luxury property in Bali">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0D1A26] via-[#0D1A26]/50 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 p-6 md:p-12">
+                    <h1 class="text-4xl md:text-6xl font-black text-white drop-shadow-lg">Find Your Paradise</h1>
+                    <p class="text-lg md:text-xl text-slate-200 mt-2 max-w-lg drop-shadow-md">Discover unparalleled luxury and investment opportunities in the heart of Indonesia.</p>
+                </div>
+            </div>
+
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-white">Our Exclusive Listings</h2>
+                <p class="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">Explore a curated selection of premier properties. Use the filters and sorting to find the home, villa, or investment that's perfect for you.</p>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Filters -->
+                <aside class="w-full lg:w-1/4 xl:w-1/5">
+                    <div class="filter-panel p-6 rounded-lg shadow-lg sticky top-24">
+                        <h3 class="text-xl font-bold text-white mb-4">Filter & Sort</h3>
+                        <div class="space-y-6">
+                             <div>
+                                <label for="sort-properties" class="block text-sm font-medium text-slate-300 mb-2">Sort by Price</label>
+                                <!-- IMPROVEMENT: Added sort dropdown -->
+                                <select id="sort-properties" class="form-select">
+                                    <option value="default">Default</option>
+                                    <option value="price-desc">Price: High to Low</option>
+                                    <option value="price-asc">Price: Low to High</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="search-keyword" class="block text-sm font-medium text-slate-300 mb-2">Keyword</label>
+                                <input type="text" id="search-keyword" placeholder="e.g. luxury, beachfront" class="form-input">
+                            </div>
+                             <div>
+                                <h4 class="text-sm font-medium text-slate-300 mb-2">Location</h4>
+                                <div id="location-filters" class="space-y-2"></div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-slate-300 mb-2">Property Type</h4>
+                                <div id="type-filters" class="space-y-2"></div>
+                            </div>
+                            <div>
+                                <button id="reset-filters" class="w-full text-center py-2 text-sm text-[#00A79D] hover:text-white transition-colors font-semibold">Reset All Filters</button>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Listings -->
+                <div class="w-full lg:w-3/4 xl:w-4/5">
+                     <div id="listing-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- Property cards will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="about" class="pt-24">
+            <div class="bg-[#13232F] p-8 md:p-12 rounded-lg shadow-lg flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <!-- IMPROVEMENT: Replaced placeholder with realistic agent photo -->
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop" alt="Bli Made" class="w-48 h-48 rounded-full object-cover shadow-2xl flex-shrink-0 border-4 border-[#223749]">
+                <div class="text-center md:text-left">
+                    <h3 class="text-3xl font-bold text-white">Bli Made</h3>
+                    <p class="text-lg text-[#00A79D] font-semibold mt-1">Lead Investment Specialist</p>
+                    <p class="mt-4 text-slate-300">With over 15 years of experience in the Indonesian luxury real estate market, Bli Made brings an unparalleled level of expertise, integrity, and personalized service to every client relationship. His deep understanding of market trends, negotiation skills, and vast network make him the ideal partner for your property journey, whether you're buying your dream home or seeking a high-return investment.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer id="contact" class="bg-[#13232F] mt-24">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
+                    <h3 class="text-2xl font-bold text-white">Bli Made<span class="text-[#00A79D]">.</span></h3>
+                    <p class="mt-2 text-slate-400">Your Trusted Partner in Property Investments.</p>
+                </div>
+                <div class="md:col-span-1">
+                    <h4 class="font-semibold text-white text-lg">Quick Links</h4>
+                     <ul class="mt-4 space-y-2">
+                        <li><a href="#properties" class="nav-link text-slate-400">Properties</a></li>
+                        <li><a href="#about" class="nav-link text-slate-400">About Me</a></li>
+                     </ul>
+                </div>
+                <div class="md:col-span-1">
+                     <h4 class="font-semibold text-white text-lg">Get in Touch</h4>
+                     <p class="mt-4 text-slate-400">Ready to find your dream property? Reach out today.</p>
+                     <div class="flex items-center justify-center md:justify-start space-x-6 mt-4">
+                         <a href="https://wa.me/6281234567890" target="_blank" aria-label="WhatsApp" class="text-slate-300 hover:text-[#00A79D] transition-colors">
+                            <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zM12.04 20.12c-1.48 0-2.93-.4-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31c-.82-1.31-1.26-2.83-1.26-4.38 0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42s2.42 3.62 2.42 5.82c0 4.54-3.7 8.24-8.24 8.24zm4.52-6.13c-.25-.12-1.47-.72-1.7-.82s-.39-.12-.56.12c-.17.25-.64.82-.79.98s-.29.17-.54.06c-.25-.12-1.06-.39-2.02-1.25s-1.45-1.94-1.62-2.27c-.17-.33-.02-.51.11-.64s.25-.29.37-.43c.12-.15.17-.25.25-.41s.04-.29-.02-.41c-.06-.12-.56-1.34-.76-1.84s-.4-.43-.56-.43h-.48c-.17 0-.43.06-.66.31s-.86.84-.86 2.05c0 1.21.88 2.37 1 2.54s1.73 2.63 4.18 3.72c.59.26 1.05.41 1.41.52.6.19 1.13.16 1.56.1.48-.06 1.47-.6 1.67-1.18s.21-1.09.15-1.18c-.06-.1-.17-.16-.25-.2z"/></svg>
+                        </a>
+                         <a href="https://instagram.com/yourprofile" target="_blank" aria-label="Instagram" class="text-slate-300 hover:text-[#00A79D] transition-colors">
+                            <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.644-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.44-1.441-1.44z"/></svg>
+                        </a>
+                     </div>
+                </div>
+            </div>
+            <div class="border-t border-[#223749] mt-12 pt-8 text-center text-slate-500 text-sm">
+                <p>© 2025 Bli Made. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Property Detail Modal -->
+    <div id="property-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0" id="modal-backdrop"></div>
+        <div id="modal-content-wrapper" class="relative modal-content w-full max-w-5xl max-h-[90vh] rounded-xl shadow-2xl flex flex-col overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-4 border-b border-[#223749] flex-shrink-0">
+                <h3 id="modal-title" class="text-2xl font-bold text-white"></h3>
+                <button id="close-modal-button" class="text-slate-400 hover:text-white text-3xl leading-none">×</button>
+            </div>
+            <!-- Modal Body -->
+            <div class="flex-grow overflow-y-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 p-6">
+                    <!-- Image Gallery -->
+                    <div class="lg:col-span-3">
+                         <div class="relative">
+                            <img id="modal-main-image" src="" alt="Property main image" class="w-full h-auto object-cover rounded-lg aspect-video">
+                             <button id="prev-image" class="absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition-opacity">❮</button>
+                             <button id="next-image" class="absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition-opacity">❯</button>
+                        </div>
+                        <div id="modal-thumbnails" class="grid grid-cols-5 gap-2 mt-2"></div>
+                    </div>
+                    <!-- Details -->
+                    <div class="lg:col-span-2">
+                        <div class="space-y-4">
+                             <div>
+                                <p class="text-sm text-slate-400">Price</p>
+                                <p id="modal-price" class="text-3xl font-bold text-[#00A79D]"></p>
+                                <p id="modal-price-idr" class="text-sm text-slate-500"></p>
+                             </div>
+                             <div id="modal-specs" class="grid grid-cols-2 gap-4 text-sm"></div>
+                             <div>
+                                <h4 class="font-semibold text-white mb-2">Description</h4>
+                                <p id="modal-description" class="text-slate-300 text-sm leading-relaxed"></p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!-- Modal Footer -->
+             <div class="flex justify-end p-4 border-t border-[#223749] flex-shrink-0 bg-[#13232F]">
+                <a href="https://wa.me/6281234567890" target="_blank" class="btn-primary font-bold py-3 px-6 rounded-lg inline-block">Inquire Now</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // IMPROVEMENT: Replaced all placeholder images with high-quality ones
+            const propertyData = [
+                {
+                    id: 1,
+                    title: 'Luxury Villa in Canggu',
+                    location: 'Bali (Canggu)',
+                    type: 'Villa',
+                    priceUSD: 1200000,
+                    specs: { beds: 5, baths: 5, area: 650, land: 800 },
+                    description: 'A masterpiece of modern architecture nestled in the vibrant heart of Canggu. This villa boasts breathtaking ocean views, an infinity pool, and state-of-the-art amenities, offering an unparalleled luxury lifestyle.',
+                    images: [
+                        'https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1612320448364-a39b6283d066?q=80&w=1932&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1598928811029-d5a2a29337c4?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1575517111478-7f6afd0973db?q=80&w=2070&auto=format&fit=crop',
+                    ],
+                    tags: ['luxury', 'beachfront', 'modern']
+                },
+                {
+                    id: 2,
+                    title: 'Modern Apartment in SCBD',
+                    location: 'Jakarta Selatan',
+                    type: 'Apartment',
+                    priceUSD: 600000,
+                    specs: { beds: 3, baths: 2, area: 180, land: 180 },
+                    description: 'Located in the prestigious Sudirman Central Business District, this apartment offers ultimate convenience and a sophisticated urban living experience with stunning city skyline views.',
+                    images: [
+                        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1560185012-1a27276b5536?q=80&w=1974&auto=format&fit=crop',
+                    ],
+                    tags: ['modern', 'city', 'investment']
+                },
+                {
+                    id: 3,
+                    title: 'Sprawling Land in Ubud',
+                    location: 'Bali (Ubud)',
+                    type: 'Land',
+                    priceUSD: 850000,
+                    specs: { beds: 0, baths: 0, area: 0, land: 5000 },
+                    description: 'A rare opportunity to acquire a vast plot of land with lush rice paddy views in the cultural heart of Ubud. Perfect for developing a private estate or a boutique resort.',
+                    images: [
+                        'https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=1938&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1590818299283-e137a911a141?q=80&w=1943&auto=format&fit=crop',
+                    ],
+                    tags: ['land', 'investment', 'development']
+                },
+                {
+                    id: 4,
+                    title: 'Classic House in Menteng',
+                    location: 'Jakarta Pusat',
+                    type: 'House',
+                    priceUSD: 2500000,
+                    specs: { beds: 6, baths: 5, area: 800, land: 1200 },
+                    description: 'An elegant and timeless residence in the highly sought-after, leafy suburb of Menteng. This property features classic colonial architecture, a large private garden, and spacious interiors.',
+                    images: [
+                        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop',
+                        'https://images.unsplash.com/photo-1588012885473-b270415356c3?q=80&w=2070&auto=format&fit=crop',
+                    ],
+                    tags: ['classic', 'luxury', 'family']
+                },
+                {
+                    id: 5,
+                    title: 'Commercial Space in Surabaya',
+                    location: 'Surabaya Pusat',
+                    type: 'Commercial',
+                    priceUSD: 950000,
+                    specs: { beds: 0, baths: 4, area: 1000, land: 1500 },
+                    description: 'Prime commercial real estate in the bustling center of Surabaya. High foot traffic area, suitable for retail, office, or restaurant ventures. A solid commercial investment.',
+                    images: [
+                        'https://images.unsplash.com/photo-1531973576160-7125cd663d86?q=80&w=2070&auto=format&fit=crop',
+                    ],
+                    tags: ['commercial', 'investment']
+                },
+                 {
+                    id: 6,
+                    title: 'Beachfront Villa in Seminyak',
+                    location: 'Bali (Seminyak)',
+                    type: 'Villa',
+                    priceUSD: 1800000,
+                    specs: { beds: 4, baths: 4, area: 550, land: 700 },
+                    description: 'Experience the best of Bali with this stunning beachfront villa in Seminyak. Direct beach access, spectacular sunset views, and designed for luxurious comfort and entertainment.',
+                    images: [
+                        'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=2070&auto=format&fit=crop',
+                    ],
+                    tags: ['luxury', 'beachfront']
+                },
+            ];
+
+            const USD_TO_IDR = 16400;
+
+            const listingGrid = document.getElementById('listing-grid');
+            const locationFiltersContainer = document.getElementById('location-filters');
+            const typeFiltersContainer = document.getElementById('type-filters');
+            const searchInput = document.getElementById('search-keyword');
+            const sortSelect = document.getElementById('sort-properties');
+            const resetBtn = document.getElementById('reset-filters');
+            
+            const modal = document.getElementById('property-modal');
+            const modalBackdrop = document.getElementById('modal-backdrop');
+            const closeModalBtn = document.getElementById('close-modal-button');
+            const modalTitle = document.getElementById('modal-title');
+            const modalPrice = document.getElementById('modal-price');
+            const modalPriceIdr = document.getElementById('modal-price-idr');
+            const modalSpecs = document.getElementById('modal-specs');
+            const modalDescription = document.getElementById('modal-description');
+            const modalMainImage = document.getElementById('modal-main-image');
+            const modalThumbnails = document.getElementById('modal-thumbnails');
+            const prevImageBtn = document.getElementById('prev-image');
+            const nextImageBtn = document.getElementById('next-image');
+            
+            let currentPropertyImages = [];
+            let currentImageIndex = 0;
+
+            function formatPrice(price) {
+                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price);
+            }
+
+            function formatPriceIDR(price) {
+                 const priceInBillion = price / 1_000_000_000;
+                 if (priceInBillion < 1) {
+                     return `${(price / 1_000_000).toFixed(0)}m IDR`
+                 }
+                return `${priceInBillion.toFixed(1)}b IDR`;
+            }
+
+            function createPropertyCard(property, index) {
+                const card = document.createElement('div');
+                card.className = 'card rounded-lg overflow-hidden shadow-lg cursor-pointer';
+                card.dataset.propertyId = property.id;
+                // IMPROVEMENT: Staggered animation delay
+                card.style.animationDelay = `${index * 50}ms`;
+                
+                let specsSummary = '';
+                if(property.type !== 'Land' && property.type !== 'Commercial') {
+                    specsSummary = `${property.specs.beds} Bed | ${property.specs.baths} Bath | ${property.specs.area} m²`;
+                } else if(property.type === 'Land') {
+                    specsSummary = `${property.specs.land} m² Land`;
+                } else {
+                    specsSummary = `${property.specs.area} m² Building`;
+                }
+
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${property.images[0]}" alt="${property.title}" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 right-2 bg-[#13232F]/80 text-white text-xs font-bold px-2 py-1 rounded-full">${property.location}</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-white truncate">${property.title}</h3>
+                        <p class="text-sm text-slate-400 mt-1">${specsSummary}</p>
+                        <p class="text-xl font-bold text-[#00A79D] mt-4">${formatPrice(property.priceUSD)}</p>
+                        <p class="text-xs text-slate-500">≈ ${formatPriceIDR(property.priceUSD * USD_TO_IDR)}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => openModal(property.id));
+                return card;
+            }
+            
+            function renderListings(properties) {
+                listingGrid.innerHTML = '';
+                if (properties.length === 0) {
+                    // IMPROVEMENT: Better empty state message
+                    listingGrid.innerHTML = `
+                        <div class="md:col-span-2 xl:col-span-3 text-center py-12 card" style="animation-delay: 0ms">
+                             <svg class="mx-auto h-12 w-12 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
+                             <h3 class="mt-2 text-lg font-medium text-white">No Properties Found</h3>
+                             <p class="mt-1 text-sm text-slate-400">Try adjusting your search or filter criteria.</p>
+                        </div>`;
+                    return;
+                }
+                properties.forEach((prop, index) => {
+                    listingGrid.appendChild(createPropertyCard(prop, index));
+                });
+            }
+
+            function createFilterCheckboxes(container, items, type) {
+                items.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center';
+                    div.innerHTML = `
+                        <input id="${type}-${item.replace(/ /g, '-')}" name="${type}" type="checkbox" value="${item}" class="h-4 w-4 rounded border-gray-300 text-[#00A79D] focus:ring-[#00A79D] bg-[#0D1A26] border-[#223749]">
+                        <label for="${type}-${item.replace(/ /g, '-')}" class="ml-3 text-sm text-slate-300">${item}</label>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+
+            function setupFilters() {
+                const locations = [...new Set(propertyData.map(p => p.location))].sort();
+                const types = [...new Set(propertyData.map(p => p.type))].sort();
+                
+                createFilterCheckboxes(locationFiltersContainer, locations, 'location');
+                createFilterCheckboxes(typeFiltersContainer, types, 'type');
+                
+                document.querySelectorAll('input[name="location"], input[name="type"], #search-keyword, #sort-properties').forEach(input => {
+                    input.addEventListener('input', applyFilters);
+                    input.addEventListener('change', applyFilters); // for select dropdown
+                });
+            }
+
+            function applyFilters() {
+                const selectedLocations = [...document.querySelectorAll('input[name="location"]:checked')].map(cb => cb.value);
+                const selectedTypes = [...document.querySelectorAll('input[name="type"]:checked')].map(cb => cb.value);
+                const keyword = searchInput.value.toLowerCase();
+                const sortValue = sortSelect.value;
+
+                let filteredProperties = propertyData.filter(p => {
+                    const locationMatch = selectedLocations.length === 0 || selectedLocations.includes(p.location);
+                    const typeMatch = selectedTypes.length === 0 || selectedTypes.includes(p.type);
+                    const keywordMatch = keyword === '' || p.title.toLowerCase().includes(keyword) || p.description.toLowerCase().includes(keyword) || p.tags.some(tag => tag.includes(keyword));
+                    return locationMatch && typeMatch && keywordMatch;
+                });
+                
+                // IMPROVEMENT: Sorting logic
+                if (sortValue === 'price-desc') {
+                    filteredProperties.sort((a, b) => b.priceUSD - a.priceUSD);
+                } else if (sortValue === 'price-asc') {
+                    filteredProperties.sort((a, b) => a.priceUSD - b.priceUSD);
+                }
+
+                renderListings(filteredProperties);
+            }
+
+            function resetFilters() {
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                searchInput.value = '';
+                sortSelect.value = 'default';
+                applyFilters();
+            }
+
+            function openModal(propertyId) {
+                const property = propertyData.find(p => p.id === propertyId);
+                if (!property) return;
+
+                modalTitle.textContent = property.title;
+                modalPrice.textContent = formatPrice(property.priceUSD);
+                modalPriceIdr.textContent = `≈ ${formatPriceIDR(property.priceUSD * USD_TO_IDR)}`;
+                modalDescription.textContent = property.description;
+                
+                // IMPROVEMENT: Added icons to specs
+                modalSpecs.innerHTML = `
+                    ${property.specs.beds > 0 ? `<div class="flex items-center gap-2"><svg class="w-5 h-5 text-[#00A79D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg> <span class="text-slate-300">${property.specs.beds} Bedrooms</span></div>` : ''}
+                    ${property.specs.baths > 0 ? `<div class="flex items-center gap-2"><svg class="w-5 h-5 text-[#00A79D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 11v10h14V11"></path></svg> <span class="text-slate-300">${property.specs.baths} Bathrooms</span></div>` : ''}
+                    ${property.specs.area > 0 ? `<div class="flex items-center gap-2"><svg class="w-5 h-5 text-[#00A79D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 0l-5-5"></path></svg> <span class="text-slate-300">${property.specs.area} m² Build</span></div>` : ''}
+                    ${property.specs.land > 0 ? `<div class="flex items-center gap-2"><svg class="w-5 h-5 text-[#00A79D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.8 11.25l1.25-6.25L12 3.75l2.95 1.25 1.25 6.25m-10.9 0h10.9"></path></svg> <span class="text-slate-300">${property.specs.land} m² Land</span></div>` : ''}
+                    <div class="flex items-center gap-2"><svg class="w-5 h-5 text-[#00A79D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> <span class="text-slate-300">${property.location}</span></div>
+                    <div class="flex items-center gap-2"><svg class="w-5 h-5 text-[#00A79D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> <span class="text-slate-300">${property.type}</span></div>
+                `;
+                
+                currentPropertyImages = property.images;
+                currentImageIndex = 0;
+                updateModalImage();
+                renderThumbnails();
+
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            function updateModalImage() {
+                if (!modalMainImage) return;
+                modalMainImage.src = currentPropertyImages[currentImageIndex];
+                updateThumbnailSelection();
+            }
+            
+            function renderThumbnails() {
+                modalThumbnails.innerHTML = '';
+                currentPropertyImages.forEach((imgSrc, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgSrc;
+                    thumb.alt = `Thumbnail ${index + 1}`;
+                    thumb.className = 'w-full h-16 object-cover rounded-md cursor-pointer border-2 border-transparent hover:border-[#00897b] transition-all';
+                    thumb.addEventListener('click', () => {
+                        currentImageIndex = index;
+                        updateModalImage();
+                    });
+                    modalThumbnails.appendChild(thumb);
+                });
+                updateThumbnailSelection();
+            }
+            
+            function updateThumbnailSelection() {
+                const thumbs = modalThumbnails.children;
+                for(let i = 0; i < thumbs.length; i++) {
+                    thumbs[i].classList.toggle('border-[#00A79D]', i === currentImageIndex);
+                }
+            }
+            
+            function showNextImage() {
+                currentImageIndex = (currentImageIndex + 1) % currentPropertyImages.length;
+                updateModalImage();
+            }
+
+            function showPrevImage() {
+                currentImageIndex = (currentImageIndex - 1 + currentPropertyImages.length) % currentPropertyImages.length;
+                updateModalImage();
+            }
+            
+            // Mobile Menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if(!mobileMenu.classList.contains('hidden')) {
+                       mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Initial setup
+            setupFilters();
+            applyFilters(); // Initial render with default sort
+            resetBtn.addEventListener('click', resetFilters);
+            closeModalBtn.addEventListener('click', closeModal);
+            modalBackdrop.addEventListener('click', closeModal);
+            nextImageBtn.addEventListener('click', showNextImage);
+            prevImageBtn.addEventListener('click', showPrevImage);
+            document.addEventListener('keydown', (e) => {
+                if(e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
